@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápios - App Cardápio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-nav">
+                <a href="index.html" class="back-btn">← Voltar</a>
+                <h1>Cardápios</h1>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Botão para adicionar novo cardápio -->
+            <div class="action-bar">
+                <button id="addMenuBtn" class="btn btn-primary">+ Novo Cardápio</button>
+            </div>
+            
+            <!-- Lista de cardápios -->
+            <div id="menusList" class="menus-list">
+                <!-- Cardápios serão carregados aqui via JavaScript -->
+            </div>
+            
+            <!-- Modal para criar cardápio -->
+            <div id="menuModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Novo Cardápio</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    
+                    <form id="menuForm">
+                        <div class="form-group">
+                            <label for="menuName">Nome do Cardápio:</label>
+                            <input type="text" id="menuName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="menuDescription">Descrição:</label>
+                            <textarea id="menuDescription" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Receitas Disponíveis:</label>
+                            <div id="availableRecipes" class="recipes-selection">
+                                <!-- Receitas disponíveis serão carregadas aqui -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Receitas Selecionadas:</label>
+                            <div id="selectedRecipes" class="selected-recipes">
+                                <!-- Receitas selecionadas aparecerão aqui -->
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelMenuBtn">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Cardápio</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Modal para visualizar cardápio -->
+            <div id="viewMenuModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="viewMenuName"></h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    
+                    <div class="menu-details">
+                        <div class="menu-description">
+                            <h3>Descrição:</h3>
+                            <p id="viewMenuDescription"></p>
+                        </div>
+                        
+                        <div class="menu-recipes">
+                            <h3>Receitas do Cardápio:</h3>
+                            <div id="viewMenuRecipes" class="menu-recipes-list">
+                                <!-- Receitas do cardápio serão exibidas aqui -->
+                            </div>
+                        </div>
+                        
+                        <div class="menu-actions">
+                            <button id="deleteMenuBtn" class="btn btn-danger">Excluir Cardápio</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Modal para visualizar receita individual -->
+            <div id="recipeDetailModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="recipeDetailTitle"></h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    
+                    <div class="recipe-details">
+                        <div class="recipe-description">
+                            <h3>Descrição:</h3>
+                            <p id="recipeDetailDescription"></p>
+                        </div>
+                        
+                        <div class="recipe-ingredients">
+                            <h3>Ingredientes:</h3>
+                            <ul id="recipeDetailIngredients"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        // Inicializar página de cardápios
+        document.addEventListener('DOMContentLoaded', function() {
+            initMenusPage();
+        });
+    </script>
+</body>
+</html>

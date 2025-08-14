@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas - App Cardápio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-nav">
+                <a href="index.html" class="back-btn">← Voltar</a>
+                <h1>Receitas</h1>
+            </div>
+        </header>
+        
+        <main>
+            <!-- Botão para adicionar nova receita -->
+            <div class="action-bar">
+                <button id="addRecipeBtn" class="btn btn-primary">+ Nova Receita</button>
+            </div>
+            
+            <!-- Lista de receitas -->
+            <div id="recipesList" class="recipes-list">
+                <!-- Receitas serão carregadas aqui via JavaScript -->
+            </div>
+            
+            <!-- Modal para criar/editar receita -->
+            <div id="recipeModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modalTitle">Nova Receita</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    
+                    <form id="recipeForm">
+                        <div class="form-group">
+                            <label for="recipeTitle">Título da Receita:</label>
+                            <input type="text" id="recipeTitle" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="recipeDescription">Descrição:</label>
+                            <textarea id="recipeDescription" rows="4" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Ingredientes:</label>
+                            <div id="ingredientsList" class="ingredients-list">
+                                <!-- Ingredientes serão adicionados aqui -->
+                            </div>
+                            <button type="button" id="addIngredientBtn" class="btn btn-outline">+ Adicionar Ingrediente</button>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Receita</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Modal para visualizar receita -->
+            <div id="viewRecipeModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="viewRecipeTitle"></h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    
+                    <div class="recipe-details">
+                        <div class="recipe-description">
+                            <h3>Descrição:</h3>
+                            <p id="viewRecipeDescription"></p>
+                        </div>
+                        
+                        <div class="recipe-ingredients">
+                            <h3>Ingredientes:</h3>
+                            <ul id="viewRecipeIngredients"></ul>
+                        </div>
+                        
+                        <div class="recipe-actions">
+                            <button id="editRecipeBtn" class="btn btn-primary">Editar</button>
+                            <button id="deleteRecipeBtn" class="btn btn-danger">Excluir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        // Inicializar página de receitas
+        document.addEventListener('DOMContentLoaded', function() {
+            initRecipesPage();
+        });
+    </script>
+</body>
+</html>
