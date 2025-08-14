@@ -5,11 +5,19 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: #333;
     background-color: #f5f5f5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .container {
@@ -90,6 +98,9 @@ main {
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: 44px;
+    touch-action: manipulation;
+    user-select: none;
 }
 
 .btn:hover {
@@ -157,6 +168,9 @@ main {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
+    min-height: 44px;
+    touch-action: manipulation;
+    user-select: none;
 }
 
 .recipe-card:hover,
@@ -454,7 +468,124 @@ footer {
     margin-bottom: 1.5rem;
 }
 
-/* Responsividade */
+/* Responsividade Mobile First */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    header {
+        padding: 1.5rem 0;
+        margin-bottom: 1rem;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    header p {
+        font-size: 0.9rem;
+    }
+    
+    .btn {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .btn-icon {
+        font-size: 1.5rem;
+        margin-right: 0.75rem;
+    }
+    
+    .btn-text h3 {
+        font-size: 1.1rem;
+    }
+    
+    .btn-text p {
+        font-size: 0.8rem;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 1rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .form-group:first-of-type {
+        padding-top: 1rem;
+    }
+    
+    .ingredient-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+    
+    .ingredient-item input,
+    .ingredient-item select {
+        margin-bottom: 0.5rem;
+    }
+    
+    .recipe-card,
+    .menu-card {
+        padding: 1rem;
+    }
+    
+    .recipe-card h3,
+    .menu-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .recipe-meta,
+    .menu-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .recipe-actions,
+    .menu-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    header h1 {
+        font-size: 2.2rem;
+    }
+    
+    .modal-content {
+        width: 90%;
+        margin: 5% auto;
+    }
+    
+    .ingredient-item {
+        grid-template-columns: 2fr 1fr 1fr auto;
+    }
+}
+
 @media (min-width: 768px) {
     .menu-buttons {
         grid-template-columns: 1fr 1fr;

@@ -2,7 +2,54 @@
 class LocalStorage {
     static getRecipes() {
         const recipes = localStorage.getItem('recipes');
-        return recipes ? JSON.parse(recipes) : [];
+        if (recipes) {
+            return JSON.parse(recipes);
+        } else {
+            // Dados de teste pré-inseridos
+            const testRecipes = [
+                {
+                    id: 'recipe1',
+                    titulo: 'Hambúrguer Artesanal',
+                    descricao: 'Delicioso hambúrguer com carne bovina, queijo e vegetais frescos.',
+                    ingredientes: [
+                        { id: 'ing1', descricao: 'Pão de hambúrguer', quantidade: 1, unidade: 'Uni' },
+                        { id: 'ing2', descricao: 'Carne bovina (150g)', quantidade: 1, unidade: 'Uni' },
+                        { id: 'ing3', descricao: 'Queijo cheddar', quantidade: 1, unidade: 'Uni' },
+                        { id: 'ing4', descricao: 'Alface', quantidade: 2, unidade: 'Uni' },
+                        { id: 'ing5', descricao: 'Tomate', quantidade: 1, unidade: 'Uni' }
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'recipe2',
+                    titulo: 'Pizza Margherita',
+                    descricao: 'Pizza clássica italiana com molho de tomate, mussarela e manjericão.',
+                    ingredientes: [
+                        { id: 'ing6', descricao: 'Massa de pizza', quantidade: 1, unidade: 'Uni' },
+                        { id: 'ing7', descricao: 'Molho de tomate', quantidade: 200, unidade: 'Uni' },
+                        { id: 'ing8', descricao: 'Mussarela', quantidade: 150, unidade: 'Uni' },
+                        { id: 'ing9', descricao: 'Manjericão fresco', quantidade: 5, unidade: 'Uni' },
+                        { id: 'ing10', descricao: 'Azeite de oliva', quantidade: 2, unidade: 'Uni' }
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'recipe3',
+                    titulo: 'Salada Caesar',
+                    descricao: 'Salada fresca com alface romana, croutons e molho caesar.',
+                    ingredientes: [
+                        { id: 'ing11', descricao: 'Alface romana', quantidade: 1, unidade: 'Uni' },
+                        { id: 'ing12', descricao: 'Croutons', quantidade: 50, unidade: 'Uni' },
+                        { id: 'ing13', descricao: 'Queijo parmesão', quantidade: 30, unidade: 'Uni' },
+                        { id: 'ing14', descricao: 'Molho caesar', quantidade: 3, unidade: 'Uni' },
+                        { id: 'ing15', descricao: 'Peito de frango grelhado', quantidade: 150, unidade: 'Uni' }
+                    ],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            this.saveRecipes(testRecipes);
+            return testRecipes;
+        }
     }
 
     static saveRecipes(recipes) {
@@ -11,7 +58,29 @@ class LocalStorage {
 
     static getMenus() {
         const menus = localStorage.getItem('menus');
-        return menus ? JSON.parse(menus) : [];
+        if (menus) {
+            return JSON.parse(menus);
+        } else {
+            // Dados de teste pré-inseridos para cardápios
+            const testMenus = [
+                {
+                    id: 'menu1',
+                    nome: 'Combo Família',
+                    descricao: 'Perfeito para compartilhar em família com opções variadas.',
+                    recipeIds: ['recipe1', 'recipe2'],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'menu2',
+                    nome: 'Menu Light',
+                    descricao: 'Opções saudáveis e nutritivas para uma refeição equilibrada.',
+                    recipeIds: ['recipe3'],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            this.saveMenus(testMenus);
+            return testMenus;
+        }
     }
 
     static saveMenus(menus) {
@@ -98,7 +167,7 @@ class MenuManager {
             id: LocalStorage.generateId(),
             nome: menuData.nome,
             descricao: menuData.descricao,
-            receitas: menuData.receitas,
+            recipeIds: menuData.receitas,
             createdAt: new Date().toISOString()
         };
         
@@ -133,7 +202,11 @@ class MenuManager {
         const menu = this.getMenuById(menuId);
         if (!menu) return [];
         
-        return menu.receitas.map(recipeId => 
+        if (!menu.recipeIds || !Array.isArray(menu.recipeIds)) {
+            return [];
+        }
+        
+        return menu.recipeIds.map(recipeId => 
             this.recipeManager.getRecipeById(recipeId)
         ).filter(recipe => recipe !== undefined);
     }
@@ -389,9 +462,13 @@ function initRecipesPage() {
         document.getElementById('viewRecipeDescription').textContent = recipe.descricao;
         
         const ingredientsList = document.getElementById('viewRecipeIngredients');
-        ingredientsList.innerHTML = recipe.ingredientes.map(ing => 
-            `<li>${ing.quantidade} ${ing.unidade} de ${ing.descricao}</li>`
-        ).join('');
+        if (recipe.ingredientes && Array.isArray(recipe.ingredientes)) {
+            ingredientsList.innerHTML = recipe.ingredientes.map(ing => 
+                `<li>${ing.quantidade} ${ing.unidade} de ${ing.descricao}</li>`
+            ).join('');
+        } else {
+            ingredientsList.innerHTML = '<li>Nenhum ingrediente cadastrado</li>';
+        }
         
         editRecipeBtn.dataset.recipeId = recipeId;
         deleteRecipeBtn.dataset.recipeId = recipeId;
@@ -433,31 +510,45 @@ function initMenusPage() {
     loadMenus();
 
     // Event listeners
-    addMenuBtn.addEventListener('click', () => {
-        openMenuModal();
-    });
+    if (addMenuBtn) {
+        addMenuBtn.addEventListener('click', () => {
+            openMenuModal();
+        });
+    } else {
+        console.error('Elemento addMenuBtn não encontrado');
+    }
 
-    menuForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        saveMenu();
-    });
+    if (menuForm) {
+        menuForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveMenu();
+        });
+    }
 
-    cancelMenuBtn.addEventListener('click', () => {
-        ModalManager.closeModal('menuModal');
-    });
+    if (cancelMenuBtn) {
+        cancelMenuBtn.addEventListener('click', () => {
+            ModalManager.closeModal('menuModal');
+        });
+    }
 
-    deleteMenuBtn.addEventListener('click', () => {
-        const menuId = deleteMenuBtn.dataset.menuId;
-        if (confirm('Tem certeza que deseja excluir este cardápio?')) {
-            menuManager.deleteMenu(menuId);
-            ModalManager.closeModal('viewMenuModal');
-            loadMenus();
-        }
-    });
+    if (deleteMenuBtn) {
+        deleteMenuBtn.addEventListener('click', () => {
+            const menuId = deleteMenuBtn.dataset.menuId;
+            if (confirm('Tem certeza que deseja excluir este cardápio?')) {
+                menuManager.deleteMenu(menuId);
+                ModalManager.closeModal('viewMenuModal');
+                loadMenus();
+            }
+        });
+    }
 
     // Funções
     function loadMenus() {
         const menusList = document.getElementById('menusList');
+        if (!menusList) {
+            console.error('Elemento menusList não encontrado');
+            return;
+        }
         const menus = menuManager.getAllMenus();
 
         if (menus.length === 0) {
@@ -475,7 +566,7 @@ function initMenusPage() {
                 <h3>${menu.nome}</h3>
                 <p>${menu.descricao}</p>
                 <div class="menu-meta">
-                    <span>${menu.receitas.length} receitas</span>
+                    <span>${menu.recipeIds && Array.isArray(menu.recipeIds) ? menu.recipeIds.length : 0} receitas</span>
                     <span>${new Date(menu.createdAt).toLocaleDateString('pt-BR')}</span>
                 </div>
             </div>
@@ -604,9 +695,13 @@ function initMenusPage() {
         document.getElementById('recipeDetailDescription').textContent = recipe.descricao;
         
         const ingredientsList = document.getElementById('recipeDetailIngredients');
-        ingredientsList.innerHTML = recipe.ingredientes.map(ing => 
-            `<li>${ing.quantidade} ${ing.unidade} de ${ing.descricao}</li>`
-        ).join('');
+        if (recipe.ingredientes && Array.isArray(recipe.ingredientes)) {
+            ingredientsList.innerHTML = recipe.ingredientes.map(ing => 
+                `<li>${ing.quantidade} ${ing.unidade} de ${ing.descricao}</li>`
+            ).join('');
+        } else {
+            ingredientsList.innerHTML = '<li>Nenhum ingrediente cadastrado</li>';
+        }
         
         ModalManager.openModal('recipeDetailModal');
     };
